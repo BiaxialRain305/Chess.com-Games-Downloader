@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from chessdotcom import client
 import os
-
+import datetime
 
 indent = "\t\t\t\t\t\t"
 # Gets all the games played
