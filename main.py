@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 from chessdotcom import client
-import json
 import os
-import datetime
-    
+
+
+indent = "\t\t\t\t\t\t"
 # Gets all the games played
 def all_games(username):
     folder_name = f"{username} - Games"
@@ -12,20 +12,16 @@ def all_games(username):
     current_datetime = datetime.datetime.now()
     elapsed_time = current_datetime - joined_datetime
     num_months = elapsed_time.days // 30
-    inp = input("NOTE: Chess.com allows you to import more than one PGN however lichess doesn't as far as I know\n\nWould you like each game in a seperate pgn file? (y/n): ")
+    inp = input(f"{indent}Would you like each game in a seperate pgn file? (y/n): ")
     while inp.lower() not in ["y", "n"]:
-        inp = input("Invalid Input\nWould you like each game in a seperate pgn file? (y/n): ").lower()
+        inp = input(f"{indent}Invalid Input\n{indent}Would you like each game in a seperate pgn file? (y/n): ").lower()
     
-
-    if inp.lower() == "y":
-        os.mkdir(folder_name)
-        
+    os.mkdir(folder_name)
+    print(f"{indent}Can't see the files? Click the 'Show Code' button on the right side ------>")    
     # Read list
     for i in range(num_months+1):
         month = (joined_datetime + timedelta(days=30*i)).strftime("%m")
         year = (joined_datetime + timedelta(days=30*i)).strftime("%Y")
-        
-        
         games_str = client.get_player_games_by_month_pgn(username, year, month).json["pgn"]["pgn"]
         lines = games_str.split('\n\n')
         result = []
@@ -48,12 +44,9 @@ def all_games(username):
             file_name = os.path.join(folder_name, f"Game{count}.pgn")
             file = open(file_name, "w")
             file.write(i)
-            file.close()
-            
-            
-    
+            file.close() 
 
 if __name__ == "__main__":
-    username = input("Enter a chess.com username: ")
+    username = input(f"{indent}Enter a chess.com username: ")
     all_games(username)
     print("DONE")
